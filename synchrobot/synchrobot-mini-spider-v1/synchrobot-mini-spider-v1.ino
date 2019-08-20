@@ -16,53 +16,85 @@ Servo j;
 Servo k;
 Servo l;
 
+/* feet */
+int aPos = 160;
+int dPos = 20;
+int gPos = 160;
+int jPos = 20;
 
-int aPos = 0;
-int bPos = 0;
-int cPos = 0;
+/* thigh */
+int bPos = 140;
+int ePos = 40;
+int hPos = 140;
+int kPos = 40;
 
-int dPos = 0;
-int ePos = 0;
-int fPos = 0;
-
-int gPos = 0;
-int hPos = 0;
-int iPos = 0;
-
-int jPos = 0;
-int kPos = 0;
-int lPos = 0;
-
-Servo test;
-int pos;
+/* hip */
+int cPos = 140;
+int fPos = 40;
+int iPos = 140;
+int lPos = 40;
 
 void setup() {
-  /* f.attach(2); */
-  /* e.attach(3); */
-  /* d.attach(4); */
-  /*  */
-  /* i.attach(5); */
-  /* h.attach(6); */
-  /* g.attach(7); */
-  /*  */
-  /* j.attach(A2); */
-  /* k.attach(A3); */
-  /* l.attach(A4); */
-  /*  */
-  /* a.attach(A5); */
-  /* b.attach(A6); */
-  /* c.attach(A7); */
+  f.attach(2);
+  e.attach(3);
+  d.attach(4);
 
-  test.attach(A7);
+  i.attach(5);
+  h.attach(6);
+  g.attach(7);
+
+  j.attach(A2);
+  k.attach(A3);
+  l.attach(A4);
+
+  a.attach(A5);
+  b.attach(A6);
+  c.attach(A7);
 }
 
 void loop() {
-  for (pos = 0; pos <= 180; pos += 1) {
-    test.write(pos);
-    delay(15);
+  for(int i = 0; bPos > 90 && ePos < 110; i++) {
+    bPos--;
+    ePos++;
+    hPos--;
+    kPos++;
+
+    aPos--;
+    dPos++;
+    gPos--;
+    jPos++;
+    
+    adjust();
+    delay(50);
   }
-  for (pos = 180; pos >= 0; pos -= 1) {
-    test.write(pos);
-    delay(15);
+  for(int i = 0; bPos < 140 && ePos > 40; i++) {
+    bPos++;
+    ePos--;
+    hPos++;
+    kPos--;
+
+    aPos++;
+    dPos--;
+    gPos++;
+    jPos--;
+
+    adjust();
+    delay(50);
   }
+}
+
+void adjust() {
+  a.write(aPos);
+  b.write(bPos);
+  c.write(cPos);
+  g.write(gPos);
+  h.write(hPos);
+  i.write(iPos);
+  d.write(dPos);
+  e.write(ePos);
+  f.write(fPos);
+  j.write(jPos);
+  k.write(kPos);
+  l.write(lPos);
+
 }
