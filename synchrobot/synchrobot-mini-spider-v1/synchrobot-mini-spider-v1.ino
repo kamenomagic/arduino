@@ -12,5 +12,14 @@ void setup() {
 }
 
 void loop() {
-  delay(100);
+  for(int i = 0; i < 1000; i++) {
+    bot.flat();
+    bot.tick();
+    delay(5);
+  }
+  for(int i = 0; i < 1000; i++) {
+    bot.stand();
+    bot.tick();
+    delay(5);
+  }
 }

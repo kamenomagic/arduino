@@ -14,6 +14,9 @@ class Quadbot {
               int pinG, int pinH, int pinI,
               int pinJ, int pinK, int pinL);
     void setLimits(Leg leg, int minimum, int maximum);
+    void tick();
+    void flat();
+    void stand();
     Leg a;
     Leg b;
     Leg c;
@@ -40,5 +43,26 @@ void Quadbot::init(int pinA, int pinB, int pinC,
   this->b.hip.setLimits(35, 130);
   this->c.hip.setLimits(50, 150);
   this->d.hip.setLimits(45, 145);
+}
+
+void Quadbot::tick() {
+  this->a.tick();
+  this->b.tick();
+  this->c.tick();
+  this->d.tick();
+}
+
+void Quadbot::flat() {
+  this->a.flat();
+  this->b.flat();
+  this->c.flat();
+  this->d.flat();
+}
+
+void Quadbot::stand() {
+  this->a.stand();
+  this->b.stand();
+  this->c.stand();
+  this->d.stand();
 }
 #endif
