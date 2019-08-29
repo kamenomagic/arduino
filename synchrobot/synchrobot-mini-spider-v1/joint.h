@@ -11,21 +11,27 @@ class Joint {
   public:
     void init(bool clockwise, int pin);
     void setLimits(int minPos, int maxPos);
-    void tick();
+    void go();
+    void minimum();
     void middle();
+    void maximum();
     void set(int pos);
     bool clockwise;
     int minPos;
     int midPos;
     int maxPos;
     int pos;
+    int lastPos;
+    int pin;
     Servo servo;
 };
 
 void Joint::init(bool clockwise, int pin) {
   this->clockwise = clockwise;
+  this->pin = pin;
   this->servo.attach(pin);
   this->setLimits(0, 180);
+  this->set(this->midPos);
 }
 
 void Joint::setLimits(int minPos, int maxPos) {
@@ -34,15 +40,26 @@ void Joint::setLimits(int minPos, int maxPos) {
   this->midPos = 90;
 }
 
-void Joint::tick() {
-  this->servo.write(this->pos);
+void Joint::go() {
+  this->pos = 90;
+  Serial.println(String(this->pin) + ": " + String(this->pos));
+  this->servo.write(90);
+}
+
+void Joint::minimum() {
+  this->set(this->minPos);
 }
 
 void Joint::middle() {
-  this->pos = this->midPos;
+  this->set(this->midPos);
+}
+
+void Joint::maximum() {
+  this->set(this->maxPos);
 }
 
 void Joint::set(int pos) {
+  this->lastPos = this->pos;
   this->pos = this->clockwise ? pos : 180 - pos;
   this->pos = this->pos < this->minPos ? this->minPos : this->pos;
   this->pos = this->pos > this->maxPos ? this->maxPos : this->pos;

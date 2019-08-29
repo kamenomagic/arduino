@@ -2,10 +2,15 @@
 #define Quadbot_h
 #include <Arduino.h>
 #include "leg.h"
+#include "joint.h"
 
 // Legs start from front left leg (top left looking down with front of robot on top) and go clockwise
 // when passing in pins, follow the legs in this pattern, front left clockwise looking down and end on back left, and
 // each leg starts at the foot and goes inward such that the feet are a, d, g, j in clockwise-leg order
+//
+enum level {
+  slowest, slow, medium, fast, fastest
+};
 
 class Quadbot {
   public:
@@ -13,14 +18,45 @@ class Quadbot {
               int pinD, int pinE, int pinF,
               int pinG, int pinH, int pinI,
               int pinJ, int pinK, int pinL);
-    void setLimits(Leg leg, int minimum, int maximum);
-    void tick();
-    void flat();
-    void stand();
+    Quadbot Quadbot::set(int aPos, int bPos, int cPos,
+                      int dPos, int ePos, int fPos,
+                      int gPos, int hPos, int iPos,
+                      int jPos, int kPos, int lPos);
+    Quadbot Quadbot::getPos(int pos[][3]);
+    Quadbot Quadbot::getLastPos(int pos[][3]);
+    Quadbot wait(int millis);
+    Quadbot go();
+    Quadbot flatten();
+    Quadbot stand();
+    Quadbot walk();
+    Quadbot dance();
+    Quadbot wave();
     Leg a;
     Leg b;
     Leg c;
     Leg d;
+    Leg legs[4] = {a, b, c, d};
+    Joint feet[4] = {
+      legs[0].foot,
+      legs[1].foot,
+      legs[2].foot,
+      legs[3].foot
+    };
+    Joint thighs[4] = {
+      legs[0].thigh,
+      legs[1].thigh,
+      legs[2].thigh,
+      legs[3].thigh
+    };
+    Joint hips[4] = {
+      legs[0].hip,
+      legs[1].hip,
+      legs[2].hip,
+      legs[3].hip
+    };
+    level speed = medium;
+  private:
+    void copyPos(int src[3], int des[3]);
 };
 
 void Quadbot::init(int pinA, int pinB, int pinC,
@@ -39,30 +75,84 @@ void Quadbot::init(int pinA, int pinB, int pinC,
   this->d.init(true, pinJ,
                 false, pinK,
                 false, pinL);
-  this->a.hip.setLimits(45, 145);
-  this->b.hip.setLimits(35, 130);
-  this->c.hip.setLimits(50, 150);
-  this->d.hip.setLimits(45, 145);
+  return *this;
 }
 
-void Quadbot::tick() {
-  this->a.tick();
-  this->b.tick();
-  this->c.tick();
-  this->d.tick();
+Quadbot Quadbot::go() {
+  // int increment;
+  // increment = speed == slowest ? 5 : increment;
+  // increment = speed == slow ? 10 : increment;
+  // increment = speed == medium ? 20 : increment;
+  // increment = speed == fast ? 45 : increment;
+  // increment = speed == fastest ? 180 : increment;
+  // int pos[4][3];
+  // this->getLastPos(pos);
+  // int endPos[4][3];
+  // this->getPos(endPos);
+  // bool moving = true;
+  // while(moving) {
+  //   moving = false;
+    // for(int legIndex = 0; legIndex < 4; legIndex++) {
+    //   for(int jointIndex = 0; jointIndex < 3; jointIndex++) {
+    //     pos[legIndex][jointIndex] += pos[legIndex][jointIndex] > endPos[legIndex][jointIndex] ? increment : -increment;
+    //     moving = pos[legIndex][jointIndex] < endPos[legIndex][jointIndex];
+    //     if(!moving) {
+    //       pos[legIndex][jointIndex] = endPos[legIndex][jointIndex];
+    //     }
+    //     this->legs[legIndex].joints[jointIndex].set(pos[legIndex][jointIndex]);
+    //   }
+    // }
+  for(int i = 0; i < 4; i++) {
+    this->legs[i].go();
+  }
+  //   delay(1);
+  // }
+  return *this;
 }
 
-void Quadbot::flat() {
-  this->a.flat();
-  this->b.flat();
-  this->c.flat();
-  this->d.flat();
+Quadbot Quadbot::set(int aPos, int bPos, int cPos,
+                  int dPos, int ePos, int fPos,
+                  int gPos, int hPos, int iPos,
+                  int jPos, int kPos, int lPos) {
+  this->a.set(aPos, bPos, cPos);
+  this->b.set(dPos, ePos, fPos);
+  this->c.set(gPos, hPos, iPos);
+  this->d.set(jPos, kPos, lPos);
+  return *this;
 }
 
-void Quadbot::stand() {
-  this->a.stand();
-  this->b.stand();
-  this->c.stand();
-  this->d.stand();
+Quadbot Quadbot::getPos(int pos[][3]) {
+  int legPos[3];
+  this->a.getPos(legPos);
+  this->copyPos(legPos, pos[0]);
+  this->b.getPos(legPos);
+  this->copyPos(legPos, pos[1]);
+  this->c.getPos(legPos);
+  this->copyPos(legPos, pos[2]);
+  this->d.getPos(legPos);
+  this->copyPos(legPos, pos[3]);
+  return *this;
 }
+
+Quadbot Quadbot::getLastPos(int pos[][3]) {
+  int legPos[3];
+  this->a.getLastPos(legPos);
+  this->copyPos(legPos, pos[0]);
+  this->b.getLastPos(legPos);
+  this->copyPos(legPos, pos[1]);
+  this->c.getLastPos(legPos);
+  this->copyPos(legPos, pos[2]);
+  this->d.getLastPos(legPos);
+  this->copyPos(legPos, pos[3]);
+  return *this;
+}
+
+void Quadbot::copyPos(int src[3], int des[3]) {
+  for(int i = 0; i < 3; i++) {
+    des[i] = src[i];
+  }
+  return *this;
+}
+
+#include "actions.h"
 #endif
