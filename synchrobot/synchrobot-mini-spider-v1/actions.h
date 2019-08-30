@@ -8,16 +8,16 @@ Quadbot Quadbot::wait(int millis) {
 
 Quadbot Quadbot::flatten() {
   for(int i = 0; i < 4; i++) {
-    this->legs[i].middle();
+    this->legs[i]->middle();
   }
   return *this;
 }
 
 Quadbot Quadbot::stand() {
   for(int i = 0; i < 4; i++) {
-    this->legs[i].foot()->set(30);
-    this->legs[i].thigh()->set(100);
-    Joint hip = *(this->legs[i].hip());
+    this->legs[i]->foot()->set(30);
+    this->legs[i]->thigh()->set(100);
+    Joint hip = *(this->legs[i]->hip());
     hip.set(hip.midPos);
   }
   return *this;

@@ -36,7 +36,7 @@ class Quadbot {
     Leg* b();
     Leg* c();
     Leg* d();
-    Leg legs[4];
+    Leg* legs[4];
     level speed = medium;
   private:
     void copyPos(int src[3], int des[3]);
@@ -46,6 +46,10 @@ void Quadbot::init(int pinA, int pinB, int pinC,
                    int pinD, int pinE, int pinF,
                    int pinG, int pinH, int pinI,
                    int pinJ, int pinK, int pinL) {
+  Leg legs[4];
+  for(int i = 0; i < 4; i++) {
+    this->legs[i] = &legs[i];
+  }
   this->a()->init(false, pinA, true, pinB, true, pinC);
   this->b()->init(true, pinD, false, pinE, false, pinF);
   this->c()->init(false, pinG, true, pinH, true, pinI);
@@ -54,19 +58,19 @@ void Quadbot::init(int pinA, int pinB, int pinC,
 }
 
 Leg* Quadbot::a() {
-  return &(this->legs[0]);
+  return this->legs[0];
 }
 
 Leg* Quadbot::b() {
-  return &(this->legs[1]);
+  return this->legs[1];
 }
 
 Leg* Quadbot::c() {
-  return &(this->legs[2]);
+  return this->legs[2];
 }
 
 Leg* Quadbot::d() {
-  return &(this->legs[3]);
+  return this->legs[3];
 }
 
 Quadbot Quadbot::go() {
@@ -95,7 +99,7 @@ Quadbot Quadbot::go() {
     // }
 
   for(int i = 0; i < 4; i++) {
-    this->legs[i].go();
+    this->legs[i]->go();
   }
 
   //   delay(1);
@@ -105,7 +109,7 @@ Quadbot Quadbot::go() {
 
 Quadbot Quadbot::set(int pos[][3]) {
   for(int i = 0; i < 4; i++) {
-    this->legs[i].set(pos[i]);
+    this->legs[i]->set(pos[i]);
   }
   return *this;
 }
