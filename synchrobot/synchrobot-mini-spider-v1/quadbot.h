@@ -37,6 +37,9 @@ class Quadbot {
     Leg* c();
     Leg* d();
     Leg* legs[4];
+    Joint* feet[4];
+    Joint* thighs[4];
+    Joint* hips[4];
     level speed = medium;
   private:
     void copyPos(int src[3], int des[3]);
@@ -54,6 +57,11 @@ void Quadbot::init(int pinA, int pinB, int pinC,
   this->b()->init(true, pinD, false, pinE, false, pinF);
   this->c()->init(false, pinG, true, pinH, true, pinI);
   this->d()->init(true, pinJ, false, pinK, false, pinL);
+  for(int i = 0; i < 4; i++) {
+    this->feet[i] = this->legs[i]->foot();
+    this->thighs[i] = this->legs[i]->thigh();
+    this->hips[i] = this->legs[i]->hip();
+  }
   return *this;
 }
 
