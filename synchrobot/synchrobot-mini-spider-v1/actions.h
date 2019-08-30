@@ -15,9 +15,9 @@ Quadbot Quadbot::flatten() {
 
 Quadbot Quadbot::stand() {
   for(int i = 0; i < 4; i++) {
-    this->feet[i].set(30);
-    this->thighs[i].set(100);
-    Joint hip = this->hips[i];
+    this->legs[i].foot()->set(30);
+    this->legs[i].thigh()->set(100);
+    Joint hip = *(this->legs[i].hip());
     hip.set(hip.midPos);
   }
   return *this;

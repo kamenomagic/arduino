@@ -41,9 +41,7 @@ void Joint::setLimits(int minPos, int maxPos) {
 }
 
 void Joint::go() {
-  this->pos = 90;
-  Serial.println(String(this->pin) + ": " + String(this->pos));
-  this->servo.write(90);
+  this->servo.write(this->pos);
 }
 
 void Joint::minimum() {
