@@ -10,6 +10,7 @@ class Leg {
               bool hipClockwise, int hipPin);
     void go();
     void middle();
+    void Leg::set(int pos[3]);
     void set(int foot, int thigh, int hip);
     void getPos(int pos[]);
     void getLastPos(int pos[]);
@@ -48,6 +49,12 @@ void Leg::go() {
 void Leg::middle() {
   for(int i = 0; i < 3; i++) {
     this->joints[i].middle();
+  }
+}
+
+void Leg::set(int pos[3]) {
+  for(int i = 0; i < 3; i++) {
+    this->joints[i].set(pos[i]);
   }
 }
 

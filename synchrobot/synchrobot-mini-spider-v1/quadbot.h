@@ -18,6 +18,7 @@ class Quadbot {
               int pinD, int pinE, int pinF,
               int pinG, int pinH, int pinI,
               int pinJ, int pinK, int pinL);
+    Quadbot Quadbot::set(int pos[][3]);
     Quadbot Quadbot::set(int aPos, int bPos, int cPos,
                       int dPos, int ePos, int fPos,
                       int gPos, int hPos, int iPos,
@@ -45,18 +46,10 @@ void Quadbot::init(int pinA, int pinB, int pinC,
                    int pinD, int pinE, int pinF,
                    int pinG, int pinH, int pinI,
                    int pinJ, int pinK, int pinL) {
-  this->a()->init(false, pinA,
-                 true, pinB,
-                 true, pinC);
-  this->b()->init(true, pinD,
-                 false, pinE,
-                 false, pinF);
-  this->c()->init(false, pinG,
-                 true, pinH,
-                 true, pinI);
-  this->d()->init(true, pinJ,
-                 false, pinK,
-                 false, pinL);
+  this->a()->init(false, pinA, true, pinB, true, pinC);
+  this->b()->init(true, pinD, false, pinE, false, pinF);
+  this->c()->init(false, pinG, true, pinH, true, pinI);
+  this->d()->init(true, pinJ, false, pinK, false, pinL);
   return *this;
 }
 
@@ -107,6 +100,13 @@ Quadbot Quadbot::go() {
 
   //   delay(1);
   // }
+  return *this;
+}
+
+Quadbot Quadbot::set(int pos[][3]) {
+  for(int i = 0; i < 4; i++) {
+    this->legs[i].set(pos[i]);
+  }
   return *this;
 }
 
