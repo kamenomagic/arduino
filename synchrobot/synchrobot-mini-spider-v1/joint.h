@@ -42,6 +42,7 @@ void Joint::setLimits(int minPos, int maxPos) {
 
 void Joint::go() {
   this->servo.write(this->pos);
+  this->lastPos = this->pos;
 }
 
 void Joint::minimum() {
@@ -57,7 +58,6 @@ void Joint::maximum() {
 }
 
 void Joint::set(int pos) {
-  this->lastPos = this->pos;
   this->pos = this->clockwise ? pos : 180 - pos;
   this->pos = this->pos < this->minPos ? this->minPos : this->pos;
   this->pos = this->pos > this->maxPos ? this->maxPos : this->pos;
