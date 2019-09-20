@@ -16,11 +16,11 @@ void setup() {
 
 void loop() {
   Serial.println("---");
-  bot->flatten();
+  bot->flatten().go();
   /* bot->go(); */
   delay(4000);
   Serial.println("---");
-  bot->stand();
+  bot->stand().go();
   /* bot->go(); */
   delay(4000);
 }

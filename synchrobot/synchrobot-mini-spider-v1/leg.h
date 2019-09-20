@@ -11,60 +11,60 @@ class Leg {
   Leg(bool footClockwise, int footPin,
                  bool thighClockwise, int thighPin,
                  bool hipClockwise, int hipPin) {
-    this->joints[0] = new Joint(footClockwise, footPin);
-    this->joints[1] = new Joint(thighClockwise, thighPin);
-    this->joints[2] = new Joint(hipClockwise, hipPin);
+    joints[0] = new Joint(footClockwise, footPin);
+    joints[1] = new Joint(thighClockwise, thighPin);
+    joints[2] = new Joint(hipClockwise, hipPin);
   }
 
   Joint foot() {
-    return this->joint(0);
+    return joint(0);
   }
 
   Joint thigh() {
-    return this->joint(1);
+    return joint(1);
   }
 
   Joint hip() {
-    return this->joint(2);
+    return joint(2);
   }
 
   Joint joint(int i) {
-    return *(this->joints[i]);
+    return *(joints[i]);
   }
 
   void go() {
     for(int i = 0; i < 3; i++) {
-      this->joint(i).go();
+      joint(i).go();
     }
   }
 
   void middle() {
     for(int i = 0; i < 3; i++) {
-      this->joint(i).middle();
+      joint(i).middle();
     }
   }
 
   void set(int pos[3]) {
     for(int i = 0; i < 3; i++) {
-      this->joint(i).set(pos[i]);
+      joint(i).set(pos[i]);
     }
   }
 
-  void set(int foot, int thigh, int hip) {
-    this->foot().set(foot);
-    this->thigh().set(thigh);
-    this->hip().set(hip);
+  void set(int footPos, int thighPos, int hipPos) {
+    foot().set(footPos);
+    thigh().set(thighPos);
+    hip().set(hipPos);
   }
 
   void getPos(int pos[]) {
     for(int i = 0; i < 3; i++) {
-      pos[i] = this->joint(i).pos;
+      pos[i] = joint(i).pos;
     }
   }
 
   void getLastPos(int pos[]) {
     for(int i = 0; i < 3; i++) {
-      pos[i] = this->joint(i).lastPos;
+      pos[i] = joint(i).lastPos;
     }
   }
 };
