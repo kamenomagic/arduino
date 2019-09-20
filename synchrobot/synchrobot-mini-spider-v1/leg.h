@@ -4,79 +4,68 @@
 #include "joint.h"
 
 class Leg {
-  public:
-    void init(bool footClockwise, int footPin,
-              bool thighClockwise, int thighPin,
-              bool hipClockwise, int hipPin);
-    void go();
-    void middle();
-    void Leg::set(int pos[3]);
-    void set(int foot, int thigh, int hip);
-    void getPos(int pos[]);
-    void getLastPos(int pos[]);
-    Joint* foot();
-    Joint* thigh();
-    Joint* hip();
+  private:
     Joint* joints[3];
+
+  public:
+  Leg(bool footClockwise, int footPin,
+                 bool thighClockwise, int thighPin,
+                 bool hipClockwise, int hipPin) {
+    this->joints[0] = new Joint(footClockwise, footPin);
+    this->joints[1] = new Joint(thighClockwise, thighPin);
+    this->joints[2] = new Joint(hipClockwise, hipPin);
+  }
+
+  Joint foot() {
+    return this->joint(0);
+  }
+
+  Joint thigh() {
+    return this->joint(1);
+  }
+
+  Joint hip() {
+    return this->joint(2);
+  }
+
+  Joint joint(int i) {
+    return *(this->joints[i]);
+  }
+
+  void go() {
+    for(int i = 0; i < 3; i++) {
+      this->joint(i).go();
+    }
+  }
+
+  void middle() {
+    for(int i = 0; i < 3; i++) {
+      this->joint(i).middle();
+    }
+  }
+
+  void set(int pos[3]) {
+    for(int i = 0; i < 3; i++) {
+      this->joint(i).set(pos[i]);
+    }
+  }
+
+  void set(int foot, int thigh, int hip) {
+    this->foot().set(foot);
+    this->thigh().set(thigh);
+    this->hip().set(hip);
+  }
+
+  void getPos(int pos[]) {
+    for(int i = 0; i < 3; i++) {
+      pos[i] = this->joint(i).pos;
+    }
+  }
+
+  void getLastPos(int pos[]) {
+    for(int i = 0; i < 3; i++) {
+      pos[i] = this->joint(i).lastPos;
+    }
+  }
 };
-
-void Leg::init(bool footClockwise, int footPin,
-               bool thighClockwise, int thighPin,
-               bool hipClockwise, int hipPin) {
-  Joint joints[3];
-  for(int i = 0; i < 3; i++) {
-    this->joints[i] = &joints[i];
-  }
-  this->foot()->init(footClockwise, footPin);
-  this->thigh()->init(thighClockwise, thighPin);
-  this->hip()->init(hipClockwise, hipPin);
-}
-
-Joint* Leg::foot() {
-  return this->joints[0];
-}
-
-Joint* Leg::thigh() {
-  return this->joints[1];
-}
-
-Joint* Leg::hip() {
-  return this->joints[2];
-}
-
-void Leg::go() {
-  for(int i = 0; i < 3; i++) {
-    this->joints[i]->go();
-  }
-}
-
-void Leg::middle() {
-  for(int i = 0; i < 3; i++) {
-    this->joints[i]->middle();
-  }
-}
-
-void Leg::set(int pos[3]) {
-  for(int i = 0; i < 3; i++) {
-    this->joints[i]->set(pos[i]);
-  }
-}
-
-void Leg::set(int foot, int thigh, int hip) {
-  this->foot()->set(foot);
-  this->thigh()->set(thigh);
-  this->hip()->set(hip);
-}
-
-void Leg::getPos(int pos[]) {
-  for(int i = 0; i < 3; i++) {
-    pos[i] = this->joints[i]->pos;
-  }
-}
-
-void Leg::getLastPos(int pos[]) {
-  for(int i = 0; i < 3; i++) {
-    pos[i] = this->joints[i]->lastPos;
-  }
-}
 #endif

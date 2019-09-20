@@ -9,57 +9,55 @@
 
 class Joint {
   public:
-    void init(bool clockwise, int pin);
-    void setLimits(int minPos, int maxPos);
-    void go();
-    void minimum();
-    void middle();
-    void maximum();
-    void set(int pos);
     bool clockwise;
     int minPos;
     int midPos;
     int maxPos;
     int pos;
     int lastPos;
-    int pin;
     Servo servo;
+
+  Joint(bool clockwise, int pin) {
+    this->clockwise = clockwise;
+    this->servo.attach(pin);
+    this->setLimits(0, 180);
+    this->lastPos = this->midPos;
+    this->middle();
+  }
+
+  void setLimits(int minPos, int maxPos) {
+    this->minPos = minPos;
+    this->maxPos = maxPos;
+    this->midPos = 90;
+  }
+
+  void go() {
+    Serial.print("go:");
+    Serial.println(this->pos);
+    this->servo.write(this->pos);
+    this->lastPos = this->pos;
+    Serial.print("lastpos is now:");
+    Serial.println(this->pos);
+  }
+
+  void minimum() {
+    this->set(this->minPos);
+  }
+
+  void middle() {
+    this->set(this->midPos);
+  }
+
+  void maximum() {
+    this->set(this->maxPos);
+  }
+
+  void set(int pos) {
+    this->pos = this->clockwise ? pos : 180 - pos;
+    this->pos = this->pos < this->minPos ? this->minPos : this->pos;
+    this->pos = this->pos > this->maxPos ? this->maxPos : this->pos;
+    Serial.print("set:");
+    Serial.println(this->pos);
+  }
 };
-
-void Joint::init(bool clockwise, int pin) {
-  this->clockwise = clockwise;
-  this->pin = pin;
-  this->servo.attach(pin);
-  this->setLimits(0, 180);
-  this->set(this->midPos);
-}
-
-void Joint::setLimits(int minPos, int maxPos) {
-  this->minPos = minPos;
-  this->maxPos = maxPos;
-  this->midPos = 90;
-}
-
-void Joint::go() {
-  this->servo.write(this->pos);
-  this->lastPos = this->pos;
-}
-
-void Joint::minimum() {
-  this->set(this->minPos);
-}
-
-void Joint::middle() {
-  this->set(this->midPos);
-}
-
-void Joint::maximum() {
-  this->set(this->maxPos);
-}
-
-void Joint::set(int pos) {
-  this->pos = this->clockwise ? pos : 180 - pos;
-  this->pos = this->pos < this->minPos ? this->minPos : this->pos;
-  this->pos = this->pos > this->maxPos ? this->maxPos : this->pos;
-}
 #endif
