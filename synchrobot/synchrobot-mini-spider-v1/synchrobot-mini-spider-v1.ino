@@ -1,6 +1,4 @@
 #include "quadbot.h"
-#include "leg.h"
-#include "joint.h"
 
 Quadbot* bot;
 
@@ -14,15 +12,12 @@ void setup() {
   bot->b()->hip()->setLimits(35, 130);
   bot->c()->hip()->setLimits(50, 150);
   bot->d()->hip()->setLimits(45, 145);
+  bot->setSpeed(fastest);
+  bot->stand()->go()->wait(2000);
 }
 
 void loop() {
   bot->
-    flatten()->
-    go()->
-    wait(4000)->
-    stand()->
-    go()->
-    wait(4000)
+    goWave(1)
   ;
 }

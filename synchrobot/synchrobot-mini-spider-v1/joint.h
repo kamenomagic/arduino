@@ -8,14 +8,16 @@
 // Clockwise means bigger, and if clockwise is false then it offsets in the other direction (lower number)
 
 class Joint {
-  public:
-  bool clockwise;
-  int minPos;
-  int midPos;
-  int maxPos;
+  private:
   int pos;
   int movePos;
   int lastPos;
+  int minPos;
+  int midPos;
+  int maxPos;
+  bool clockwise;
+
+  public:
   Servo servo;
 
   Joint(bool newClockwise, int pin) {
@@ -27,15 +29,45 @@ class Joint {
     middle();
   }
 
-  void setLimits(int newMinPos, int newMaxPos) {
+  Joint* setLimits(int newMinPos, int newMaxPos) {
     minPos = newMinPos;
     maxPos = newMaxPos;
     midPos = 90;
+    return this;
   }
 
-  void set(int newPos) {
+  int getPos() {
+    return clockwise ? pos : 180 - pos;
+  }
+
+  int getLastPos() {
+    return clockwise ? lastPos : 180 - lastPos;
+  }
+
+  Joint* set(int newPos) {
     pos = clip(clockwise ? newPos : 180 - newPos);
     movePos = lastPos;
+    return this;
+  }
+
+  Joint* offset(int offset) {
+    return set(pos + offset);
+  }
+
+  Joint* offsetGo(int offset) {
+    return set(pos + offset)->go();
+  }
+
+  Joint* setGo(int newPos) {
+    pos = clip(clockwise ? newPos : 180 - newPos);
+    movePos = lastPos;
+    go();
+    return this;
+  }
+
+  Joint* go() {
+    go(180);
+    return this;
   }
 
   bool go(int increment) {
@@ -58,16 +90,24 @@ class Joint {
     return newPos;
   }
 
-  void minimum() {
+  Joint* minimum() {
     set(minPos);
+    return this;
   }
 
-  void middle() {
+  Joint* middle() {
     set(midPos);
+    return this;
   }
 
-  void maximum() {
+  Joint* maximum() {
     set(maxPos);
+    return this;
+  }
+
+  Joint* wait(int millis) {
+    delay(millis);
+    return this;
   }
 };
 #endif

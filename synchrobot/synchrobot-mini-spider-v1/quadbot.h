@@ -52,7 +52,7 @@ class Quadbot {
     while(!moved) {
       for(int i = 0; i < 4; i++) {
         moved = leg(i)->go(speedIncrement()) || moved;
-        delay(5);
+        delay(50);
       }
     }
     return this;
@@ -60,10 +60,10 @@ class Quadbot {
 
   int speedIncrement() {
     int increment;
-    increment = speed == slowest ? 5 : increment;
-    increment = speed == slow ? 10 : increment;
+    increment = speed == slowest ? 1 : increment;
+    increment = speed == slow ? 5 : increment;
     increment = speed == medium ? 20 : increment;
-    increment = speed == fast ? 45 : increment;
+    increment = speed == fast ? 75 : increment;
     increment = speed == fastest ? 180 : increment;
     return increment;
   }
@@ -124,6 +124,11 @@ class Quadbot {
     return this;
   }
 
+  Quadbot* setSpeed(level newSpeed) {
+    speed = newSpeed;
+    return this;
+  }
+
   Quadbot* flatten() {
     for(int i = 0; i < 4; i++) {
       leg(i)->middle();
@@ -139,16 +144,54 @@ class Quadbot {
     }
     return this;
   }
+  Quadbot* goStand() {
+    return stand()->go();
+  }
 
-  Quadbot* walk() {
+  Quadbot* goWave(int cycles) {
+    for(int c = 0; c < cycles; c++) {
+      stand()->go()->wait(1000);
+      leg(0)->hip()->offset(20);
+      leg(1)->thigh()->offset(50);
+      leg(1)->foot()->offset(50);
+      leg(2)->hip()->offset(-20);
+      leg(3)->thigh()->offset(40);
+      leg(3)->foot()->offset(-20);
+      go()->wait(1000);
+      leg(1)->hip()->offsetGo(20)->wait(200);
+      leg(1)->hip()->offsetGo(-40)->wait(200);
+      leg(1)->hip()->offsetGo(40)->wait(200);
+      leg(1)->hip()->offsetGo(-40)->wait(200);
+      leg(1)->hip()->offsetGo(40)->wait(200);
+      goStand()->wait(1000);
+
+      // int pos = leg(1)->hip()->getPos();
+      // leg(1)->hip()->setGo(0)->wait(1000);
+      // leg(1)->hip()->setGo(pos)->wait(1000);
+    }
     return this;
   }
 
-  Quadbot* dance() {
+  Quadbot* goLiftFeet(int cycles) {
+    for(int c = 0; c < cycles; c++) {
+      for(int i = 0; i < 4; i++) {
+        int pos = leg(i)->foot()->getPos();
+        leg(i)->foot()->
+          middle()->go()->wait(1000)->
+          set(pos)->go()
+        ;
+      }
+    }
     return this;
   }
 
-  Quadbot* wave() {
+  Quadbot* goWalk(int cycles) {
+    for(int c = 0; c < cycles; c++) {
+    }
+    return this;
+  }
+
+  Quadbot* goDance() {
     return this;
   }
 };

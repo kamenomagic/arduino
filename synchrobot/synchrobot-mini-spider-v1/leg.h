@@ -30,6 +30,11 @@ class Leg {
     return joint(2);
   }
 
+  Leg* go() {
+    go(180);
+    return this;
+  }
+
   bool go(int increment) {
     bool moved = true;
     for(int i = 0; i < 3; i++) {
@@ -38,34 +43,44 @@ class Leg {
     return moved;
   }
 
-  void middle() {
+  Leg* middle() {
     for(int i = 0; i < 3; i++) {
       joint(i)->middle();
     }
+    return this;
   }
 
-  void set(int pos[3]) {
+  Leg* set(int pos[3]) {
     for(int i = 0; i < 3; i++) {
       joint(i)->set(pos[i]);
     }
+    return this;
   }
 
-  void set(int footPos, int thighPos, int hipPos) {
+  Leg* set(int footPos, int thighPos, int hipPos) {
     foot()->set(footPos);
     thigh()->set(thighPos);
     hip()->set(hipPos);
+    return this;
   }
 
-  void getPos(int pos[]) {
-    for(int i = 0; i < 3; i++) {
-      pos[i] = joint(i)->pos;
-    }
+  Leg* wait(int millis) {
+    delay(millis);
+    return this;
   }
 
-  void getLastPos(int pos[]) {
+  Leg* getPos(int pos[]) {
     for(int i = 0; i < 3; i++) {
-      pos[i] = joint(i)->lastPos;
+      pos[i] = joint(i)->getPos();
     }
+    return this;
+  }
+
+  Leg* getLastPos(int pos[]) {
+    for(int i = 0; i < 3; i++) {
+      pos[i] = joint(i)->getLastPos();
+    }
+    return this;
   }
 };
 #endif
