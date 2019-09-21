@@ -27,27 +27,27 @@ class Quadbot {
     legs[3] = new Leg(true, pinJ, false, pinK, false, pinL);
   }
 
-  Leg leg(int i) {
-    return *(legs[i]);
+  Leg* leg(int i) {
+    return legs[i];
   }
 
-  Leg a() {
+  Leg* a() {
     return leg(0);
   }
 
-  Leg b() {
+  Leg* b() {
     return leg(1);
   }
 
-  Leg c() {
+  Leg* c() {
     return leg(2);
   }
 
-  Leg d() {
+  Leg* d() {
     return leg(3);
   }
 
-  Quadbot go() {
+  Quadbot* go() {
     // int increment;
     // increment = speed == slowest ? 5 : increment;
     // increment = speed == slow ? 10 : increment;
@@ -73,99 +73,99 @@ class Quadbot {
       // }
 
     for(int i = 0; i < 4; i++) {
-      leg(i).go();
+      leg(i)->go();
     }
 
     //   delay(1);
     // }
-    return *this;
+    return this;
   }
 
-  Quadbot set(int pos[][3]) {
+  Quadbot* set(int pos[][3]) {
     for(int i = 0; i < 4; i++) {
-      leg(i).set(pos[i]);
+      leg(i)->set(pos[i]);
     }
-    return *this;
+    return this;
   }
 
-  Quadbot set(int aPos, int bPos, int cPos,
+  Quadbot* set(int aPos, int bPos, int cPos,
                     int dPos, int ePos, int fPos,
                     int gPos, int hPos, int iPos,
                     int jPos, int kPos, int lPos) {
-    a().set(aPos, bPos, cPos);
-    b().set(dPos, ePos, fPos);
-    c().set(gPos, hPos, iPos);
-    d().set(jPos, kPos, lPos);
-    return *this;
+    a()->set(aPos, bPos, cPos);
+    b()->set(dPos, ePos, fPos);
+    c()->set(gPos, hPos, iPos);
+    d()->set(jPos, kPos, lPos);
+    return this;
   }
 
-  Quadbot getPos(int pos[][3]) {
+  Quadbot* getPos(int pos[][3]) {
     int legPos[3];
-    a().getPos(legPos);
+    a()->getPos(legPos);
     copyPos(legPos, pos[0]);
-    b().getPos(legPos);
+    b()->getPos(legPos);
     copyPos(legPos, pos[1]);
-    c().getPos(legPos);
+    c()->getPos(legPos);
     copyPos(legPos, pos[2]);
-    d().getPos(legPos);
+    d()->getPos(legPos);
     copyPos(legPos, pos[3]);
-    return *this;
+    return this;
   }
 
-  Quadbot getLastPos(int pos[][3]) {
+  Quadbot* getLastPos(int pos[][3]) {
     int legPos[3];
-    a().getLastPos(legPos);
+    a()->getLastPos(legPos);
     copyPos(legPos, pos[0]);
-    b().getLastPos(legPos);
+    b()->getLastPos(legPos);
     copyPos(legPos, pos[1]);
-    c().getLastPos(legPos);
+    c()->getLastPos(legPos);
     copyPos(legPos, pos[2]);
-    d().getLastPos(legPos);
+    d()->getLastPos(legPos);
     copyPos(legPos, pos[3]);
-    return *this;
+    return this;
   }
 
-  void copyPos(int src[3], int des[3]) {
+  Quadbot* copyPos(int src[3], int des[3]) {
     for(int i = 0; i < 3; i++) {
       des[i] = src[i];
     }
-    return *this;
+    return this;
   }
 
-  Quadbot wait(int millis) {
+  Quadbot* wait(int millis) {
     for(int i = 0; i < millis / 5; i++) {
       go();
       delay(4);
     }
-    return *this;
+    return this;
   }
 
-  Quadbot flatten() {
+  Quadbot* flatten() {
     for(int i = 0; i < 4; i++) {
-      leg(i).middle();
+      leg(i)->middle();
     }
-    return *this;
+    return this;
   }
 
-  Quadbot stand() {
+  Quadbot* stand() {
     for(int i = 0; i < 4; i++) {
-      leg(i).foot().set(30);
-      leg(i).thigh().set(100);
-      leg(i).hip().middle();
+      leg(i)->foot()->set(30);
+      leg(i)->thigh()->set(100);
+      leg(i)->hip()->middle();
     }
-    return *this;
+    return this;
   }
 
-  Quadbot walk() {
-    return *this;
+  Quadbot* walk() {
+    return this;
   }
 
-  Quadbot dance() {
-    return *this;
+  Quadbot* dance() {
+    return this;
   }
 
-  Quadbot wave() {
-    return *this;
+  Quadbot* wave() {
+    return this;
   }
 };
 #endif

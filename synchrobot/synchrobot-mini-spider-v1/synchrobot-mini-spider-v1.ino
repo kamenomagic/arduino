@@ -1,4 +1,6 @@
 #include "quadbot.h"
+#include "leg.h"
+#include "joint.h"
 
 Quadbot* bot;
 
@@ -8,19 +10,17 @@ void setup() {
                     4, 3, 2,
                     7, 6, 5,
                     A2, A3, A4);
-  bot->a().hip().setLimits(45, 145);
-  bot->b().hip().setLimits(35, 130);
-  bot->c().hip().setLimits(50, 150);
-  bot->d().hip().setLimits(45, 145);
+  bot->a()->hip()->setLimits(45, 145);
+  bot->b()->hip()->setLimits(35, 130);
+  bot->c()->hip()->setLimits(50, 150);
+  bot->d()->hip()->setLimits(45, 145);
 }
 
 void loop() {
-  Serial.println("---");
-  bot->flatten().go();
-  /* bot->go(); */
+  bot->flatten()->go();
   delay(4000);
   Serial.println("---");
-  bot->stand().go();
-  /* bot->go(); */
+  bot->stand()->go();
   delay(4000);
+  Serial.println("---");
 }
