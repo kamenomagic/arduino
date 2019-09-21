@@ -2,6 +2,8 @@
 #define Joint_h
 #include <Arduino.h>
 #include <Servo.h>
+#include "quadbot.h"
+#include "leg.h"
 
 // "clockwise" means standing the servo motor with the white join facing down, and on the top side of the view, looking straight down on the servo. This means the number gets greater as it goes clockwise in this manner, and less as it goes counter-clockwise. 
 // This is used to orient the joints to understand the direction
@@ -18,9 +20,13 @@ class Joint {
   bool clockwise;
 
   public:
+  Quadbot* bot;
+  Leg* leg;
   Servo servo;
 
-  Joint(bool newClockwise, int pin) {
+  Joint(Quadbot* inBot, Leg* inLeg, bool newClockwise, int pin) {
+    bot = inBot;
+    leg = inLeg;
     clockwise = newClockwise;
     servo.attach(pin);
     setLimits(0, 180);

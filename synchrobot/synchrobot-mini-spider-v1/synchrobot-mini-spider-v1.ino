@@ -8,16 +8,20 @@ void setup() {
                     4, 3, 2,
                     7, 6, 5,
                     A2, A3, A4);
-  bot->a()->hip()->setLimits(45, 145);
-  bot->b()->hip()->setLimits(35, 130);
-  bot->c()->hip()->setLimits(50, 150);
-  bot->d()->hip()->setLimits(45, 145);
-  bot->setSpeed(fastest);
-  bot->stand()->go()->wait(2000);
+  bot->
+    setSpeed(fastest)->
+    wait(2000)->
+    goStand()->wait(2000)
+  ;
 }
 
 void loop() {
   bot->
-    goWave(1)
+    leg(0)->hip()->set(0)->bot->
+    leg(1)->hip()->set(0)->bot->
+    leg(2)->hip()->set(0)->bot->
+    leg(3)->hip()->set(0)->bot->
+    go();
+  /*   goLiftFeet(1) */
   ;
 }

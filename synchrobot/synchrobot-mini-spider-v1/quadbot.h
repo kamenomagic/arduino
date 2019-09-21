@@ -21,10 +21,10 @@ class Quadbot {
                      int pinD, int pinE, int pinF,
                      int pinG, int pinH, int pinI,
                      int pinJ, int pinK, int pinL) {
-    legs[0] = new Leg(false, pinA, true, pinB, true, pinC);
-    legs[1] = new Leg(true, pinD, false, pinE, false, pinF);
-    legs[2] = new Leg(false, pinG, true, pinH, true, pinI);
-    legs[3] = new Leg(true, pinJ, false, pinK, false, pinL);
+    legs[0] = new Leg(this, false, pinA, true, pinB, true, pinC);
+    legs[1] = new Leg(this, true, pinD, false, pinE, true, pinF);
+    legs[2] = new Leg(this, false, pinG, true, pinH, true, pinI);
+    legs[3] = new Leg(this, true, pinJ, false, pinK, true, pinL);
   }
 
   Leg* leg(int i) {
@@ -148,40 +148,53 @@ class Quadbot {
     return stand()->go();
   }
 
+  Quadbot* goLeanTowards(int legIndex) {
+    goStand();
+    legIndex %= 4;
+    leg(legIndex)->thigh()->offset(50);
+    leg((legIndex + 1) % 4)->hip()->offset(20);
+    leg((legIndex + 2) % 4)->thigh()->offset(50);
+    leg((legIndex + 2) % 4)->foot()->offset(50);
+    leg((legIndex - 1) % 4)->hip()->offset(-20);
+    go();
+    return this;
+  }
+
   Quadbot* goWave(int cycles) {
     for(int c = 0; c < cycles; c++) {
-      stand()->go()->wait(1000);
-      leg(0)->hip()->offset(20);
-      leg(1)->thigh()->offset(50);
-      leg(1)->foot()->offset(50);
-      leg(2)->hip()->offset(-20);
-      leg(3)->thigh()->offset(40);
-      leg(3)->foot()->offset(-20);
-      go()->wait(1000);
-      leg(1)->hip()->offsetGo(20)->wait(200);
-      leg(1)->hip()->offsetGo(-40)->wait(200);
-      leg(1)->hip()->offsetGo(40)->wait(200);
-      leg(1)->hip()->offsetGo(-40)->wait(200);
-      leg(1)->hip()->offsetGo(40)->wait(200);
       goStand()->wait(1000);
+      goLeanTowards(3)->wait(1000);
 
-      // int pos = leg(1)->hip()->getPos();
-      // leg(1)->hip()->setGo(0)->wait(1000);
-      // leg(1)->hip()->setGo(pos)->wait(1000);
+      leg(1)->thigh()->offset(40);
+      leg(1)->foot()->offset(-20);
+      
+      leg(1)->foot()->offsetGo(60);
+      leg(1)->hip()->offsetGo(5)->wait(200);
+
+      leg(1)->foot()->offsetGo(-60);
+      leg(1)->hip()->offsetGo(-5)->wait(200);
+
+      leg(1)->foot()->offsetGo(60);
+      leg(1)->hip()->offsetGo(5)->wait(200);
+
+      leg(1)->foot()->offsetGo(-60);
+      leg(1)->hip()->offsetGo(-5)->wait(200);
+
+      leg(1)->foot()->offsetGo(60);
+      leg(1)->hip()->offsetGo(5)->wait(200);
+      goStand()->wait(1000);
     }
     return this;
   }
 
   Quadbot* goLiftFeet(int cycles) {
-    for(int c = 0; c < cycles; c++) {
-      for(int i = 0; i < 4; i++) {
-        int pos = leg(i)->foot()->getPos();
-        leg(i)->foot()->
-          middle()->go()->wait(1000)->
-          set(pos)->go()
-        ;
-      }
-    }
+    goLeanTowards(3)->wait(2000);
+    // for(int c = 0; c < cycles; c++) {
+    //   for(int i = 0; i < 4; i++) {
+    //     goLeanTowards((i + 2) % 4);
+    //     leg(i)->foot()->middle()->go()->wait(1000);
+    //   }
+    // }
     return this;
   }
 

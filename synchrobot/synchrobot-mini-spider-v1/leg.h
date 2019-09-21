@@ -2,16 +2,20 @@
 #define Leg_h
 #include <Arduino.h>
 #include "joint.h"
+#include "quadbot.h"
 
 class Leg {
   public:
   Joint* joints[3];
-  Leg(bool footClockwise, int footPin,
-                 bool thighClockwise, int thighPin,
-                 bool hipClockwise, int hipPin) {
-    joints[0] = new Joint(footClockwise, footPin);
-    joints[1] = new Joint(thighClockwise, thighPin);
-    joints[2] = new Joint(hipClockwise, hipPin);
+  Quadbot* bot;
+  Leg(Quadbot* inBot,
+      bool footClockwise, int footPin,
+      bool thighClockwise, int thighPin,
+      bool hipClockwise, int hipPin) {
+    bot = inBot;
+    joints[0] = new Joint(bot, this, footClockwise, footPin);
+    joints[1] = new Joint(bot, this, thighClockwise, thighPin);
+    joints[2] = new Joint(bot, this, hipClockwise, hipPin);
   }
 
   Joint* joint(int i) {
