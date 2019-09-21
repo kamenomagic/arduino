@@ -18,9 +18,9 @@ class Quadbot {
   public:
   Leg* legs[4];
   Quadbot(int pinA, int pinB, int pinC,
-                     int pinD, int pinE, int pinF,
-                     int pinG, int pinH, int pinI,
-                     int pinJ, int pinK, int pinL) {
+          int pinD, int pinE, int pinF,
+          int pinG, int pinH, int pinI,
+          int pinJ, int pinK, int pinL) {
     legs[0] = new Leg(this, false, pinA, true, pinB, true, pinC);
     legs[1] = new Leg(this, true, pinD, false, pinE, true, pinF);
     legs[2] = new Leg(this, false, pinG, true, pinH, true, pinI);

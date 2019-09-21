@@ -2,7 +2,7 @@
 #define Leg_h
 #include <Arduino.h>
 #include "joint.h"
-#include "quadbot.h"
+class Quadbot;
 
 class Leg {
   public:
