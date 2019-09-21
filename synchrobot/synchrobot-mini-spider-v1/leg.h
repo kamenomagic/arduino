@@ -4,10 +4,8 @@
 #include "joint.h"
 
 class Leg {
-  private:
-    Joint* joints[3];
-
   public:
+  Joint* joints[3];
   Leg(bool footClockwise, int footPin,
                  bool thighClockwise, int thighPin,
                  bool hipClockwise, int hipPin) {
@@ -32,10 +30,12 @@ class Leg {
     return joint(2);
   }
 
-  void go() {
+  bool go(int increment) {
+    bool moved = true;
     for(int i = 0; i < 3; i++) {
-      joint(i)->go();
+      moved = joint(i)->go(increment) && moved;
     }
+    return moved;
   }
 
   void middle() {

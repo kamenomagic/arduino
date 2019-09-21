@@ -17,10 +17,12 @@ void setup() {
 }
 
 void loop() {
-  bot->flatten()->go();
-  delay(4000);
-  Serial.println("---");
-  bot->stand()->go();
-  delay(4000);
-  Serial.println("---");
+  bot->
+    flatten()->
+    go()->
+    wait(4000)->
+    stand()->
+    go()->
+    wait(4000)
+  ;
 }

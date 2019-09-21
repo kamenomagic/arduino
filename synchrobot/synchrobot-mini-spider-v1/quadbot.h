@@ -13,10 +13,10 @@ enum level {
 
 class Quadbot {
   private:
-    Leg* legs[4];
-    level speed = medium;
+  level speed = medium;
 
   public:
+  Leg* legs[4];
   Quadbot(int pinA, int pinB, int pinC,
                      int pinD, int pinE, int pinF,
                      int pinG, int pinH, int pinI,
@@ -48,37 +48,24 @@ class Quadbot {
   }
 
   Quadbot* go() {
-    // int increment;
-    // increment = speed == slowest ? 5 : increment;
-    // increment = speed == slow ? 10 : increment;
-    // increment = speed == medium ? 20 : increment;
-    // increment = speed == fast ? 45 : increment;
-    // increment = speed == fastest ? 180 : increment;
-    // int pos[4][3];
-    // getLastPos(pos);
-    // int endPos[4][3];
-    // getPos(endPos);
-    // bool moving = true;
-    // while(moving) {
-    //   moving = false;
-      // for(int legIndex = 0; legIndex < 4; legIndex++) {
-      //   for(int jointIndex = 0; jointIndex < 3; jointIndex++) {
-      //     pos[legIndex][jointIndex] += pos[legIndex][jointIndex] > endPos[legIndex][jointIndex] ? increment : -increment;
-      //     moving = pos[legIndex][jointIndex] < endPos[legIndex][jointIndex];
-      //     if(!moving) {
-      //       pos[legIndex][jointIndex] = endPos[legIndex][jointIndex];
-      //     }
-      //     legs[legIndex].joints[jointIndex].set(pos[legIndex][jointIndex]);
-      //   }
-      // }
-
-    for(int i = 0; i < 4; i++) {
-      leg(i)->go();
+    bool moved = false;
+    while(!moved) {
+      for(int i = 0; i < 4; i++) {
+        moved = leg(i)->go(speedIncrement()) || moved;
+        delay(5);
+      }
     }
-
-    //   delay(1);
-    // }
     return this;
+  }
+
+  int speedIncrement() {
+    int increment;
+    increment = speed == slowest ? 5 : increment;
+    increment = speed == slow ? 10 : increment;
+    increment = speed == medium ? 20 : increment;
+    increment = speed == fast ? 45 : increment;
+    increment = speed == fastest ? 180 : increment;
+    return increment;
   }
 
   Quadbot* set(int pos[][3]) {
@@ -133,10 +120,7 @@ class Quadbot {
   }
 
   Quadbot* wait(int millis) {
-    for(int i = 0; i < millis / 5; i++) {
-      go();
-      delay(4);
-    }
+    delay(millis);
     return this;
   }
 

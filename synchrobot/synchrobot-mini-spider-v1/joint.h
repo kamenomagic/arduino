@@ -9,19 +9,21 @@
 
 class Joint {
   public:
-    bool clockwise;
-    int minPos;
-    int midPos;
-    int maxPos;
-    int pos;
-    int lastPos;
-    Servo servo;
+  bool clockwise;
+  int minPos;
+  int midPos;
+  int maxPos;
+  int pos;
+  int movePos;
+  int lastPos;
+  Servo servo;
 
   Joint(bool newClockwise, int pin) {
     clockwise = newClockwise;
     servo.attach(pin);
     setLimits(0, 180);
     lastPos = midPos;
+    movePos = lastPos;
     middle();
   }
 
@@ -32,20 +34,28 @@ class Joint {
   }
 
   void set(int newPos) {
-    pos = clockwise ? newPos : 180 - newPos;
-    pos = pos < minPos ? minPos : pos;
-    pos = pos > maxPos ? maxPos : pos;
-    Serial.print("set:");
-    Serial.println(pos);
+    pos = clip(clockwise ? newPos : 180 - newPos);
+    movePos = lastPos;
   }
 
-  void go() {
-    Serial.print("go:");
-    Serial.println(pos);
-    servo.write(pos);
-    lastPos = pos;
-    Serial.print("lastpos is now:");
-    Serial.println(pos);
+  bool go(int increment) {
+    if(movePos == pos) return true;
+    bool positive = (movePos < pos);
+    movePos += positive ? increment : -increment;
+    movePos = (positive && movePos >= pos) || (!positive && movePos <=pos) ? pos : movePos;
+    servo.write(movePos);
+    if(movePos == pos) {
+      lastPos = pos;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  int clip(int newPos) {
+    newPos = newPos < minPos ? minPos : newPos;
+    newPos = newPos > maxPos ? maxPos : newPos;
+    return newPos;
   }
 
   void minimum() {
