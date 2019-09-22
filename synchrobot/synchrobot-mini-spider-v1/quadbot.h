@@ -148,15 +148,40 @@ class Quadbot {
     return stand()->go();
   }
 
+  Quadbot* goTwist(int cycles) {
+    for(int c = 0; c < cycles; c++) {
+      a()->hip()->set(0)->bot->
+      b()->hip()->set(0)->bot->
+      c()->hip()->set(0)->bot->
+      d()->hip()->set(0)->bot->
+      go()->wait(1000);
+      a()->hip()->set(180)->bot->
+      b()->hip()->set(180)->bot->
+      c()->hip()->set(180)->bot->
+      d()->hip()->set(180)->bot->
+      go()->wait(1000);
+    }
+    return this;
+  }
+
   Quadbot* goLeanTowards(int legIndex) {
     goStand();
     legIndex %= 4;
     leg(legIndex)->thigh()->offset(50);
+    leg(legIndex)->foot()->offset(50);
     leg((legIndex + 1) % 4)->hip()->offset(20);
-    leg((legIndex + 2) % 4)->thigh()->offset(50);
-    leg((legIndex + 2) % 4)->foot()->offset(50);
     leg((legIndex - 1) % 4)->hip()->offset(-20);
     go();
+    return this;
+  }
+
+  Quadbot* goLiftFeet(int cycles) {
+    for(int c = 0; c < cycles; c++) {
+      for(int i = 0; i < 4; i++) {
+        goLeanTowards((i + 2) % 4)->wait(5000);
+        // leg(i)->foot()->middle()->go()->wait(3000);
+      }
+    }
     return this;
   }
 
@@ -184,17 +209,6 @@ class Quadbot {
       leg(1)->hip()->offsetGo(5)->wait(200);
       goStand()->wait(1000);
     }
-    return this;
-  }
-
-  Quadbot* goLiftFeet(int cycles) {
-    goLeanTowards(3)->wait(2000);
-    // for(int c = 0; c < cycles; c++) {
-    //   for(int i = 0; i < 4; i++) {
-    //     goLeanTowards((i + 2) % 4);
-    //     leg(i)->foot()->middle()->go()->wait(1000);
-    //   }
-    // }
     return this;
   }
 
