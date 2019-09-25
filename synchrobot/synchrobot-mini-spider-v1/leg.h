@@ -47,6 +47,14 @@ class Leg {
     return moved;
   }
 
+  Leg* goRaise() {
+    thigh()->set(130)->go();
+  }
+
+  Leg* goLower() {
+    thigh()->set(100)->go();
+  }
+
   Leg* middle() {
     for(int i = 0; i < 3; i++) {
       joint(i)->middle();

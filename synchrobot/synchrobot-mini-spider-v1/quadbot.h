@@ -22,9 +22,9 @@ class Quadbot {
           int pinG, int pinH, int pinI,
           int pinJ, int pinK, int pinL) {
     legs[0] = new Leg(this, false, pinA, true, pinB, true, pinC);
-    legs[1] = new Leg(this, true, pinD, false, pinE, true, pinF);
+    legs[1] = new Leg(this, true, pinD, false, pinE, false, pinF);
     legs[2] = new Leg(this, false, pinG, true, pinH, true, pinI);
-    legs[3] = new Leg(this, true, pinJ, false, pinK, true, pinL);
+    legs[3] = new Leg(this, true, pinJ, false, pinK, false, pinL);
   }
 
   Leg* leg(int i) {
@@ -214,6 +214,27 @@ class Quadbot {
 
   Quadbot* goWalk(int cycles) {
     for(int c = 0; c < cycles; c++) {
+      goStand();
+
+      leg(0)->hip()->set(60);
+      go();
+      for(int i = 0; i < 2; i++) {
+        leg(3 - i)->goRaise()->wait(100);
+        leg(3 - i)->hip()->set(0)->go()->wait(100);
+        leg(3 - i)->goLower()->wait(100);
+
+        leg(0 + i)->goRaise()->wait(100);
+        leg(0 + i)->hip()->set(130)->go()->wait(100);
+        leg(0 + i)->goLower()->wait(100);
+
+        leg(0 + i)->hip()->set(90);
+        leg(1 - i)->hip()->set(0);
+        leg(2 + i)->hip()->set(130);
+        leg(3 - i)->hip()->set(90);
+        go()->wait(200);
+
+      }
+      goStand();
     }
     return this;
   }

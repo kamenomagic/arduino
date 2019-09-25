@@ -31,6 +31,9 @@ void loop() {
     Serial.println(posString);
     setJoint(jointLetter, posString.toInt());
   }
+  bot->
+    goWalk(1)
+  ;
 }
 
 void setJoint(char jointLetter, int pos) {
