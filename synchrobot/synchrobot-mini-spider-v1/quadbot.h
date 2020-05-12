@@ -213,28 +213,31 @@ class Quadbot {
   }
 
   Quadbot* goWalk(int cycles) {
+    goStand();
     for(int c = 0; c < cycles; c++) {
-      goStand();
-
-      leg(0)->hip()->set(60);
-      go();
       for(int i = 0; i < 2; i++) {
+        stand()->leg(0 + i)->hip()->set(60);
+        go();
+        wait(1000);
+
         leg(3 - i)->goRaise()->wait(100);
-        leg(3 - i)->hip()->set(0)->go()->wait(100);
+        leg(3 - i)->hip()->set(30)->go()->wait(100);
         leg(3 - i)->goLower()->wait(100);
+        wait(1000);
 
         leg(0 + i)->goRaise()->wait(100);
-        leg(0 + i)->hip()->set(130)->go()->wait(100);
+        leg(0 + i)->hip()->set(110)->go()->wait(100);
         leg(0 + i)->goLower()->wait(100);
+        wait(1000);
 
-        leg(0 + i)->hip()->set(90);
-        leg(1 - i)->hip()->set(0);
-        leg(2 + i)->hip()->set(130);
+        leg(1 - i)->hip()->set(60);
         leg(3 - i)->hip()->set(90);
-        go()->wait(200);
-
+        leg(0 + i)->foot()->set(0);
+        leg(0 + i)->thigh()->set(130);
+        leg(2 + i)->foot()->set(40);
+        leg(2 + i)->thigh()->set(110);
+        go()->wait(5000);
       }
-      goStand();
     }
     return this;
   }
